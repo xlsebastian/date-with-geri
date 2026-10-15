@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hola geri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --negro:#07040d; --morado:#6a2fd6; --morado-claro:#b58cff; --rojo:#e0243a; --hueso:#f3ecff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;min-height:100%;color:var(--hueso);background:var(--negro);
+  font-family:'Syne',system-ui,sans-serif;font-weight:500;
+  background-image:
+    radial-gradient(60% 40% at 15% 0%,rgba(106,47,214,.55),transparent 70%),
+    radial-gradient(50% 35% at 100% 100%,rgba(224,36,58,.35),transparent 70%);
+  background-attachment:fixed;
+}
+main{position:relative;z-index:1;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 22px;max-width:520px;margin:0 auto;text-align:center}
+h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(3rem,16vw,5.2rem);line-height:.95;margin:0 0 18px;letter-spacing:-.02em;
+  background:linear-gradient(100deg,var(--hueso) 30%,var(--morado-claro) 70%,var(--rojo));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6rem);margin:0 0 8px}
+.sub{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:1.35rem;line-height:1.4;margin:0 auto 34px;color:#e4d6ff;max-width:34ch}
+.fila{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-bottom:12px}
+.btn{
+  font:inherit;font-weight:800;font-size:1rem;color:var(--hueso);text-decoration:none;cursor:pointer;
+  padding:15px 8px;border-radius:999px;border:1.5px solid var(--morado-claro);background:rgba(106,47,214,.25);
+  display:block;width:100%;transition:background .2s,transform .15s,border-color .2s;
+}
+.btn:hover,.btn:focus-visible{background:var(--morado);transform:translateY(-2px)}
+.btn:focus-visible{outline:3px solid var(--hueso);outline-offset:3px}
+.btn.rojo{background:var(--rojo);border-color:var(--rojo);font-size:1.05rem;padding:17px 10px}
+.btn.rojo:hover,.btn.rojo:focus-visible{background:#ff3b52;border-color:#ff3b52}
+.pagina{width:100%}
+.pagina[hidden]{display:none}
+.foto{
+  width:100%;aspect-ratio:4/5;border:2px dashed var(--morado-claro);border-radius:18px;
+  background:rgba(106,47,214,.12);display:flex;align-items:center;justify-content:center;
+  color:var(--morado-claro);font-size:.95rem;overflow:hidden;
+}
+.foto img{width:100%;height:100%;object-fit:cover;display:block}
+.tarjeta{margin:0 0 28px}
+.tarjeta p{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:1.45rem;line-height:1.35;margin:14px 6px 0}
+.volver{display:inline-block;margin-top:6px;width:auto;padding:13px 26px}
+.texto{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:1.4rem;line-height:1.45;margin:0 0 28px}
+
+/* ===== FONDO DE LIGHTSTICKS ===== */
+.fondo{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.b{
+  position:absolute;width:var(--s);height:calc(var(--s) * 2.5);
+  opacity:.45;transform:rotate(var(--r));
+  filter:drop-shadow(0 0 8px currentColor);
+  animation:flota 8s ease-in-out infinite;animation-delay:var(--d);
+}
+@keyframes flota{
+  0%,100%{transform:rotate(var(--r)) translateY(0)}
+  50%{transform:rotate(var(--r)) translateY(-14px)}
+}
+@media (max-width:600px){.b{width:calc(var(--s) * .72);height:calc(var(--s) * 1.8)}}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}.b{animation:none}}
+</style>
+</head>
+<body>
+
+<!-- Dibujo del lightstick (se define una vez y se reutiliza) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="bomba" viewBox="0 0 40 100">
+    <circle cx="20" cy="20" r="17" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="2.5"/>
+    <circle cx="20" cy="20" r="9" fill="currentColor"/>
+    <path d="M12 34h16l-3 10H15z" fill="currentColor" fill-opacity=".6"/>
+    <rect x="14" y="44" width="12" height="50" rx="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <rect x="14" y="56" width="12" height="6" fill="currentColor" fill-opacity=".6"/>
+  </symbol>
+</svg>
+
+<!-- Fondo decorado: cambia left/top/color/tamaño (--s) para moverlos -->
+<div class="fondo" aria-hidden="true">
+  <svg class="b" viewBox="0 0 40 100" style="left:4%;top:6%;--s:46px;--r:-18deg;--d:0s;color:#b58cff"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:20%;top:62%;--s:38px;--r:14deg;--d:-2s;color:#ff5fa2"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:11%;top:34%;--s:30px;--r:-8deg;--d:-4s;color:#4cc9f0"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:2%;top:78%;--s:42px;--r:22deg;--d:-1s;color:#e0243a"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:34%;top:4%;--s:28px;--r:10deg;--d:-5s;color:#ffd166"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:42%;top:80%;--s:34px;--r:-14deg;--d:-3s;color:#7cf29a"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:58%;top:8%;--s:36px;--r:16deg;--d:-6s;color:#e0243a"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:70%;top:70%;--s:30px;--r:-20deg;--d:-2.5s;color:#b58cff"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:80%;top:20%;--s:44px;--r:12deg;--d:-4.5s;color:#4cc9f0"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:90%;top:48%;--s:34px;--r:-10deg;--d:-1.5s;color:#ff5fa2"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:88%;top:76%;--s:46px;--r:20deg;--d:-3.5s;color:#ffd166"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:93%;top:4%;--s:28px;--r:-16deg;--d:-5.5s;color:#7cf29a"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:52%;top:50%;--s:24px;--r:8deg;--d:-7s;color:#b58cff"><use href="#bomba"/></svg>
+  <svg class="b" viewBox="0 0 40 100" style="left:26%;top:18%;--s:24px;--r:-12deg;--d:-6.5s;color:#ff5fa2"><use href="#bomba"/></svg>
+</div>
+
+<main>
+
+  <!-- INICIO -->
+  <section class="pagina" id="inicio">
+    <h1>Hola Geri</h1>
+    <p class="sub">He creado esta pagina para invitarte a salir este fin de semana, si no puedes pues quedo a tu disposición</p>
+    <div class="fila">
+      <a class="btn" href="#cita1">Cita I</a>
+      <a class="btn" href="#cita2">Cita II</a>
+      <a class="btn" href="#cita3">Cita III</a>
+    </div>
+    <a class="btn rojo" href="#porque">¿Por qué deberías decir que sí?</a>
+  </section>
+
+  <!-- CITA 1 -->
+  <section class="pagina" id="cita1" hidden>
+    <h2>Cita I</h2>
+    <div class="tarjeta" style="margin-top:22px">
+      <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto1.jpg" alt=""> -->
+      <div class="foto">aquí va la foto 1</div>
+      <p>Vamos a cine, película de tu elección o yo escojo :p</p>
+    </div>
+    <div class="tarjeta">
+      <div class="foto">aquí va la foto 2</div>
+      <p>Después del cine ir a comer algo dentro del centro comercial o por fuera</p>
+    </div>
+    <a class="btn volver" href="#inicio">volver</a>
+  </section>
+
+  <!-- CITA 2 -->
+  <section class="pagina" id="cita2" hidden>
+    <h2>Cita II</h2>
+    <div class="tarjeta" style="margin-top:22px">
+      <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto3.jpg" alt=""> -->
+      <div class="foto">aquí va la foto</div>
+      <p>Hacer un picnic en un mirador (nunca he ido a un mirador) DJOSADKJAS</p>
+      <p>o simplemente ir a comer comida rápida en cualquier lugar</p>
+    </div>
+    <a class="btn volver" href="#inicio">volver</a>
+  </section>
+
+  <!-- CITA 3 -->
+  <section class="pagina" id="cita3" hidden>
+    <h2>Cita III</h2>
+    <div class="tarjeta" style="margin-top:22px">
+      <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto4.jpg" alt=""> -->
+      <div class="foto">aquí va la foto</div>
+      <p>Plan de chill en una cafetería o repostería, Rappi me ha hecho conocer buenas cafeterías que quiero ir JSAKDJADSJDA así que ya sería yo escoger y llevarte</p>
+    </div>
+    <a class="btn volver" href="#inicio">volver</a>
+  </section>
+
+  <!-- POR QUÉ DEBERÍAS DECIR QUE SÍ (pendiente) -->
+  <section class="pagina" id="porque" hidden>
+    <h2>¿Por qué deberías de decir que sí?</h2>
+    <p class="texto">aquí irán las razones</p>
+    <a class="btn volver" href="#inicio">volver</a>
+  </section>
+
+</main>
+<script>
+(function(){
+  var ids=['inicio','cita1','cita2','cita3','porque'];
+  function mostrar(){
+    var h=(location.hash||'#inicio').slice(1);
+    if(ids.indexOf(h)<0)h='inicio';
+    ids.forEach(function(id){document.getElementById(id).hidden=(id!==h)});
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',mostrar);
+  mostrar();
+})();
+</script>
+</body>
+</html>

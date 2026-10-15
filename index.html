@@ -42,9 +42,10 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
 .foto{
   width:100%;aspect-ratio:4/5;border:2px dashed var(--morado-claro);border-radius:18px;
   background:rgba(106,47,214,.12);display:flex;align-items:center;justify-content:center;
-  color:var(--morado-claro);font-size:.95rem;overflow:hidden;
+  color:var(--morado-claro);font-size:.95rem;overflow:hidden;padding:12px;
 }
-.foto img{width:100%;height:100%;object-fit:cover;display:block}
+.foto.con-foto{border:none;padding:0;aspect-ratio:auto;background:none}
+.foto img{width:100%;height:auto;display:block}
 .tarjeta{margin:0 0 28px}
 .tarjeta p{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:1.45rem;line-height:1.35;margin:14px 6px 0}
 .volver{display:inline-block;margin-top:6px;width:auto;padding:13px 26px}
@@ -130,12 +131,11 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
   <section class="pagina" id="cita1" hidden>
     <h2>Cita I</h2>
     <div class="tarjeta" style="margin-top:22px">
-      <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto1.jpg" alt=""> -->
-      <div class="foto">aquí va la foto 1</div>
+      <div class="foto" data-foto="cita1-cine"><span>falta la foto: cita1-cine</span></div>
       <p>Vamos a cine, película de tu elección o yo escojo :p</p>
     </div>
     <div class="tarjeta">
-      <div class="foto">aquí va la foto 2</div>
+      <div class="foto" data-foto="cita1-comida"><span>falta la foto: cita1-comida</span></div>
       <p>Después del cine ir a comer algo dentro del centro comercial o por fuera</p>
     </div>
     <a class="btn volver" href="#inicio">volver</a>
@@ -145,8 +145,7 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
   <section class="pagina" id="cita2" hidden>
     <h2>Cita II</h2>
     <div class="tarjeta" style="margin-top:22px">
-      <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto3.jpg" alt=""> -->
-      <div class="foto">aquí va la foto</div>
+      <div class="foto" data-foto="cita2"><span>falta la foto: cita2</span></div>
       <p>Hacer un picnic en un mirador (nunca he ido a un mirador) DJOSADKJAS</p>
       <p>o simplemente ir a comer comida rápida en cualquier lugar</p>
     </div>
@@ -157,8 +156,7 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
   <section class="pagina" id="cita3" hidden>
     <h2>Cita III</h2>
     <div class="tarjeta" style="margin-top:22px">
-      <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto4.jpg" alt=""> -->
-      <div class="foto">aquí va la foto</div>
+      <div class="foto" data-foto="cita3"><span>falta la foto: cita3</span></div>
       <p>Plan de chill en una cafetería o repostería, Rappi me ha hecho conocer buenas cafeterías que quiero ir JSAKDJADSJDA así que ya sería yo escoger y llevarte</p>
     </div>
     <a class="btn volver" href="#inicio">volver</a>
@@ -169,16 +167,14 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
     <div class="escena">
       <div class="momento activo" id="momento1">
         <h2>Taehyung estará presente</h2>
-        <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto5.jpg" alt=""> -->
-        <div class="foto">aquí va la foto 1</div>
+        <div class="foto" data-foto="taehyung"><span>falta la foto: taehyung</span></div>
       </div>
       <div class="momento mentira" id="momentoMentira">
         <h2>mentira</h2>
       </div>
       <div class="momento" id="momento2">
         <h2>Yo estaré presente</h2>
-        <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto6.jpg" alt=""> -->
-        <div class="foto">aquí va la foto 2</div>
+        <div class="foto" data-foto="yo"><span>falta la foto: yo</span></div>
       </div>
     </div>
     <a class="btn volver" href="#inicio">volver</a>
@@ -192,6 +188,28 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
   var m1=document.getElementById('momento1');
   var mm=document.getElementById('momentoMentira');
   var m2=document.getElementById('momento2');
+
+  /* ===== CARGA AUTOMÁTICA DE FOTOS =====
+     Busca nombre.jpg, nombre.jpeg, nombre.png o nombre.webp
+     en la misma carpeta que index.html */
+  function cargarFotos(){
+    var exts=['jpg','jpeg','png','webp'];
+    document.querySelectorAll('.foto[data-foto]').forEach(function(caja){
+      var nombre=caja.getAttribute('data-foto');
+      (function probar(i){
+        if(i>=exts.length)return;
+        var img=new Image();
+        img.onload=function(){
+          caja.textContent='';
+          caja.classList.add('con-foto');
+          caja.appendChild(img);
+        };
+        img.onerror=function(){probar(i+1)};
+        img.alt='';
+        img.src=nombre+'.'+exts[i];
+      })(0);
+    });
+  }
 
   function limpiar(){
     timers.forEach(clearTimeout);
@@ -224,7 +242,9 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
     window.scrollTo(0,0);
     if(h==='porque'){iniciarPorque()}else{limpiar()}
   }
+
   window.addEventListener('hashchange',mostrar);
+  cargarFotos();
   mostrar();
 })();
 </script>

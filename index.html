@@ -50,6 +50,21 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
 .volver{display:inline-block;margin-top:6px;width:auto;padding:13px 26px}
 .texto{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:1.4rem;line-height:1.45;margin:0 0 28px}
 
+/* ===== PÁGINA "POR QUÉ" ===== */
+.escena{display:grid;margin-bottom:28px}
+.momento{
+  grid-area:1/1;opacity:0;pointer-events:none;
+  transition:opacity 1.2s ease;
+}
+.momento.activo{opacity:1;pointer-events:auto}
+.momento h2{margin:0 0 20px;text-align:center}
+.momento.mentira{display:flex;align-items:center;justify-content:center}
+.momento.mentira h2{
+  margin:0;color:var(--rojo);
+  font-size:clamp(3rem,18vw,5.5rem);letter-spacing:-.02em;
+  text-shadow:0 0 28px rgba(224,36,58,.55);
+}
+
 /* ===== FONDO DE LIGHTSTICKS ===== */
 .fondo{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
 .b{
@@ -149,10 +164,23 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
     <a class="btn volver" href="#inicio">volver</a>
   </section>
 
-  <!-- POR QUÉ DEBERÍAS DECIR QUE SÍ (pendiente) -->
+  <!-- POR QUÉ DEBERÍAS DECIR QUE SÍ -->
   <section class="pagina" id="porque" hidden>
-    <h2>¿Por qué deberías de decir que sí?</h2>
-    <p class="texto">aquí irán las razones</p>
+    <div class="escena">
+      <div class="momento activo" id="momento1">
+        <h2>Taehyung estará presente</h2>
+        <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto5.jpg" alt=""> -->
+        <div class="foto">aquí va la foto 1</div>
+      </div>
+      <div class="momento mentira" id="momentoMentira">
+        <h2>mentira</h2>
+      </div>
+      <div class="momento" id="momento2">
+        <h2>Yo estaré presente</h2>
+        <!-- Para poner tu foto: reemplaza el texto del div por <img src="foto6.jpg" alt=""> -->
+        <div class="foto">aquí va la foto 2</div>
+      </div>
+    </div>
     <a class="btn volver" href="#inicio">volver</a>
   </section>
 
@@ -160,11 +188,41 @@ h2{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,9vw,2.6r
 <script>
 (function(){
   var ids=['inicio','cita1','cita2','cita3','porque'];
+  var timers=[];
+  var m1=document.getElementById('momento1');
+  var mm=document.getElementById('momentoMentira');
+  var m2=document.getElementById('momento2');
+
+  function limpiar(){
+    timers.forEach(clearTimeout);
+    timers=[];
+  }
+
+  function iniciarPorque(){
+    limpiar();
+    mm.classList.remove('activo');
+    m2.classList.remove('activo');
+    m1.classList.add('activo');
+
+    // a los 3 s: Taehyung se desvanece y aparece "mentira"
+    timers.push(setTimeout(function(){
+      m1.classList.remove('activo');
+      mm.classList.add('activo');
+    },3000));
+
+    // 2.2 s después: "mentira" se desvanece y aparece "Yo estaré presente"
+    timers.push(setTimeout(function(){
+      mm.classList.remove('activo');
+      m2.classList.add('activo');
+    },5200));
+  }
+
   function mostrar(){
     var h=(location.hash||'#inicio').slice(1);
     if(ids.indexOf(h)<0)h='inicio';
     ids.forEach(function(id){document.getElementById(id).hidden=(id!==h)});
     window.scrollTo(0,0);
+    if(h==='porque'){iniciarPorque()}else{limpiar()}
   }
   window.addEventListener('hashchange',mostrar);
   mostrar();
